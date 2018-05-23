@@ -61,7 +61,7 @@ sub _init {
   };
 }
 
-# select, insert, update, delete Method only make parameters.
+# select, insert, update, upsert, delete Method only make parameters.
 sub select {
   my ($self, %params) = @_;
   $self->{params} = {};
@@ -129,6 +129,17 @@ sub update {
   $self = $self->_init($self->{setting});
   for(my $count=0;$count<@$params;$count++) {
     $params->[$count]->{'@search.action'} = 'merge';
+  }
+  $self->{params}{query}{value} = $params;
+  return $self;
+}
+
+sub upsert {
+  my ($self, $params) = @_;
+  $self->{params} = {};
+  $self = $self->_init($self->{setting});
+  for(my $count=0;$count<@$params;$count++) {
+    $params->[$count]->{'@search.action'} = 'mergeOrUpload';
   }
   $self->{params}{query}{value} = $params;
   return $self;
@@ -210,6 +221,9 @@ WebService::Azure::Search - Request Azure Search API
     # Run Update request
     my $update = $azure->update(@values); # '@search.action' statement is 'merge'.
     my $update_result = $update->run; # return hash reference.
+    # Run Upsert request
+    my $upsert = $azure->upsert(@values); # '@search.action' statement is 'mergeOrUpload'.
+    my $upsert_result = $upsert->run; # return hash reference.
     # Run Delete request
     my $delete = $azure->delete(@values); # '@search.action' statement is 'delete'.
     my $delete_result = $delete->run; # return hash reference.

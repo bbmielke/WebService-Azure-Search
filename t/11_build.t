@@ -80,4 +80,19 @@ subtest delete => sub {
   is $query->{rid}, 'test2';
 };
 
+subtest upsert => sub {
+  #my $azure = WebService::Azure::Search->new(%init_params);
+  my $upsert = $azure->upsert([
+      {
+        id => '3',
+        rid => 'test3',
+      },
+  ]);
+  isa_ok $upsert, "HASH";
+  my $query = $upsert->{params}{query}{value}->[0];
+  is $query->{'@search.action'}, 'mergeOrUpload';
+  is $query->{id}, '3';
+  is $query->{rid}, 'test3';
+};
+
 done_testing();

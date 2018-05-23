@@ -37,6 +37,9 @@ WebService::Azure::Search - Request Azure Search API
     # Run Update request
     my $update = $azure->update(@values); # '@search.action' statement is 'merge'.
     my $update_result = $update->run; # return hash reference.
+    # Run Upsert request
+    my $upsert = $azure->upsert(@values); # '@search.action' statement is 'mergeOrUpload'.
+    my $upsert_result = $upsert->run; # return hash reference.
     # Run Delete request
     my $delete = $azure->delete(@values); # '@search.action' statement is 'delete'.
     my $delete_result = $delete->run; # return hash reference.
