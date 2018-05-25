@@ -73,6 +73,10 @@ sub select {
   if ($params->{search}) {
     $self->{params}{query}{search} = $params->{search};
   }
+  $self->{params}{query}{facets} = undef;
+  if ($params->{facets}) {
+    $self->{params}{query}{facets} = $params->{facets};
+  }
   $self->{params}{query}{searchMode} = "any"; # default is 'any'
   if ($params->{searchMode}) {
     $self->{params}{query}{searchMode} = $params->{searchMode};
@@ -95,6 +99,12 @@ sub select {
   }
   if ($params->{filter}) { # filter is optional
     $self->{params}{query}{filter} = $params->{filter};
+  }
+  if ($params->{select}) { # filter is optional
+    $self->{params}{query}{select} = $params->{select};
+  }
+  if ($params->{queryType}) { # filter is optional
+    $self->{params}{query}{queryType} = $params->{queryType};
   }
 
   $self->{params}{url} = undef;
